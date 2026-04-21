@@ -5,6 +5,8 @@ import (
 	"net"
 	"os"
 	"time"
+
+	"github.com/fatih/color"
 )
 
 var portsToCheck = []int{
@@ -32,14 +34,16 @@ func main() {
 	if len(os.Args) > 1 {
 		host = os.Args[1]
 	}
+	green := color.New(color.FgGreen).SprintFunc()
+	red := color.New(color.FgRed).SprintFunc()
 
 	fmt.Printf("Scanning %s...\n\n", host)
 
 	openCount := 0
 	for _, port := range portsToCheck {
-		status := "CLOSED"
+		status := red("CLOSED")
 		if checkPort(host, port) {
-			status = "OPEN  "
+			status = green("OPEN  ")
 			openCount++
 		}
 		fmt.Printf("Port %-6d %s\n", port, status)
